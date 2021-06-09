@@ -18,7 +18,9 @@ public class Game
     double max;
     final int MAXDIGITS = 5;
     int number[] = new int[MAXDIGITS];
-    int digit = 0; //keeps track of place in array for the initial generation
+    String gNumber[] = new String[MAXDIGITS];
+    int digit = 0;
+    int gDigit;//keeps track of place in array for the initial generation
     //keeps track of the number of digits of the number being guesses
     //initializing the number generator
     int RandomNumber(int min,int max){
@@ -47,11 +49,37 @@ public class Game
         //Generating the Number
         System.out.println("How many digits do you want the number to have?");
         int numberSize = input.nextInt();
-        if(numberSize > MAXDIGITS) System.out.println("for the sake of your own sanity, please don't pick such a large number");
+        if(numberSize > MAXDIGITS) System.out.println("Please reset the Java Engine.\n And for the sake of your own sanity, please don't pick such a large number");
         while (digit < numberSize) {
-            number[digit] = RandomNumber(0,9);
+            System.out.println(number[digit] = RandomNumber(0,10));
             digit++;
+        }
+        
+        //converting the int array into a string array, as I am not willing to convert anything else
+        String numberStr[] = new String[number.length];
+        for (int i = 0; i < number.length; i++) {
+            numberStr[i] = String.valueOf(number[i]);
+        }
+        
+        //GUESSING
+        while (bulls < numberSize){
+           String guess = input.nextLine();
+           
+           //converter that takes the guessed string, then converts it into characters,
+           //then converts those characters back into strings to place into a string array
+           String guessStr[] = new String[guess.length()];
+           for (int i =0; i < guess.length(); i++) {
+               char digitG = guess.charAt(i);
+               System.out.println(guessStr[i] = Character.toString(digitG));
+            }
+           
+           //finding the bulls
+           gDigit = 0;
+           while(gDigit < guess.length()){
+               bulls= bulls + 1;
+               gDigit++;
+           }
+           System.out.println("there are " + bulls + " bulls");
         }
     }
 }
-
