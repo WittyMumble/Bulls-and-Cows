@@ -26,7 +26,7 @@ public class Game
     int RandomNumber(int min,int max){
             int x = (int)Math.floor((Math.random()*((max-min)+1))+min); 
             return x;
-        }//I got this from a java tutorial online
+    }//I got this from a java tutorial online
     //main block
     public Game()
     {
@@ -48,38 +48,48 @@ public class Game
         
         //Generating the Number
         System.out.println("How many digits do you want the number to have?");
-        int numberSize = input.nextInt();
+        int numberSize = input.nextInt(); //
         if(numberSize > MAXDIGITS) System.out.println("Please reset the Java Engine.\n And for the sake of your own sanity, please don't pick such a large number");
-        while (digit < numberSize) {
-            System.out.println(number[digit] = RandomNumber(0,10));
-            digit++;
+        else if(numberSize <= 0) System.out.println("Please pick a number above 0");
+        else{
+            while (digit < numberSize) {
+                System.out.println(number[digit] = RandomNumber(0,9)); //generates all the values. These values are currently being printed for test purposes.
+                digit++;
+            }
         }
-        
-        //converting the int array into a string array, as I am not willing to convert anything else
+        //converting the int array into a string array
+        //it seems like the easiest way for me to compare them
         String numberStr[] = new String[number.length];
         for (int i = 0; i < number.length; i++) {
             numberStr[i] = String.valueOf(number[i]);
-        }
+        } // i found a tutorial for this one too
         
         //GUESSING
         while (bulls < numberSize){
            String guess = input.nextLine();
-           
+           gDigit = 0;
            //converter that takes the guessed string, then converts it into characters,
            //then converts those characters back into strings to place into a string array
            String guessStr[] = new String[guess.length()];
            for (int i =0; i < guess.length(); i++) {
-               char digitG = guess.charAt(i);
-               System.out.println(guessStr[i] = Character.toString(digitG));
-            }
-           
+               char charG = guess.charAt(i); //converts each character in a string to its own character
+               guessStr[i] = Character.toString(charG); //records those characters as strings in an array
+            } //also mostly from a tutorial 
+            
            //finding the bulls
-           gDigit = 0;
            while(gDigit < guess.length()){
-               bulls= bulls + 1;
+               if (numberStr[gDigit].equals(guessStr[gDigit])){ 
+                   System.out.println("Matched digit" + gDigit);
+                   System.out.println(guess.length());
+                   bulls++;
+                   
+               }
                gDigit++;
            }
            System.out.println("there are " + bulls + " bulls");
+        }
+        if (bulls == numberSize){
+            System.out.println("Congratulations! You guessed the number!");
         }
     }
 }
