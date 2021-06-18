@@ -16,12 +16,14 @@ public class Game
     int cows;
     double min;
     double max;
-    final int MAXDIGITS = 5;
+    final int MAXDIGITS = 5; //the largest possible number of digits you could have
     int number[] = new int[MAXDIGITS];
+    int matched[] = new int[MAXDIGITS];
     String gNumber[] = new String[MAXDIGITS];
-    int digit = 0;
-    int gDigit;//keeps track of place in array for the initial generation
+    int digit = 0; //keeps track of place in array for the initial generation
+    int gDigit; //keeps track of guessed digits in the array
     //keeps track of the number of digits of the number being guesses
+    
     //initializing the number generator
     int RandomNumber(int min,int max){
             int x = (int)Math.floor((Math.random()*((max-min)+1))+min); 
@@ -31,6 +33,7 @@ public class Game
     public Game()
     {
         System.out.println('\u000c'); //clears terminal
+        
         //Reading intro text from a file. storing it in a file is easier since it takes up less space and is easier to edit.
         File theFile=new File(filename);
         try {
@@ -43,21 +46,24 @@ public class Game
             e.printStackTrace();
             System.out.println("Something is wrong with a file needed for this program");
         }
+        
         //scanner for the actual game
         Scanner input = new Scanner (System.in);
         
         //Generating the Number
         System.out.println("How many digits do you want the number to have?");
-        int numberSize = input.nextInt(); //
-        if(numberSize > MAXDIGITS) System.out.println("Please reset the Java Engine.\n And for the sake of your own sanity, please don't pick such a large number");
+        int numberSize = input.nextInt(); //makes the scanner track for number size
+        if(numberSize > MAXDIGITS) System.out.println("For the sake of your own sanity, please don't pick such a large number");
         else if(numberSize <= 0) System.out.println("Please pick a number above 0");
         else{
             while (digit < numberSize) {
                 number[digit] = RandomNumber(0,9); //generates all the values. These values are currently being printed for test purposes.
+                matched [digit] = 0;
                 digit++;
             }
             
         }
+        
         //converting the int array into a string array
         //it seems like the easiest way for me to compare them
         String numberStr[] = new String[number.length];
@@ -67,7 +73,7 @@ public class Game
         
         //GUESSING
         while (bulls < numberSize){
-           String guess = input.nextLine();
+           String guess = input.nextLine(); //from this point onwards, any inputs are treated as guesses
            gDigit = 0;
            
            //converter that takes the guessed string, then converts it into characters,
@@ -81,25 +87,34 @@ public class Game
            //finding the bulls and cows
            while(gDigit < guess.length()){
                if (numberStr[gDigit].equals(guessStr[gDigit])){ 
-                   System.out.println("Matched bull " + gDigit);
+                   //System.out.println("Matched bull " + gDigit);
                    guess.length();
                    bulls++;
+                   matched[gDigit] = 1; //marks bull
                } else {
                    for (int i = 0; i < guess.length(); i++){
                        if ((numberStr[gDigit].equals(guessStr[gDigit]) == false) && (numberStr[gDigit].equals(guessStr[i]))) {
-                           System.out.println("Matched cow " + i);
-                           cows++;
+                            if (matched[gDigit] == 0) {
+                               cows++;
+                               matched[gDigit] = 1;
+                               //System.out.println("Matched cow " + i);
+                            }
                         }
                     }
                 }
                gDigit++;
-           }
+           } //end of bulls and cows while
             System.out.println("there are " + bulls + " bulls\nand " + cows + " cows");
+           
+            //Resets everything for the next round
            if (bulls < numberSize) {
                bulls = 0;
                cows = 0;
+               for (var i = 0; i < numberStr.length; i++){
+                   matched[i] = 0; 
+                }
             }
-        }
+        } //end of guessing while
         
         if (bulls == numberSize){
             System.out.println("Congratulations! You guessed the number!");
