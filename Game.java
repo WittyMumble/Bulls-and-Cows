@@ -53,9 +53,10 @@ public class Game
         else if(numberSize <= 0) System.out.println("Please pick a number above 0");
         else{
             while (digit < numberSize) {
-                System.out.println(number[digit] = RandomNumber(0,9)); //generates all the values. These values are currently being printed for test purposes.
+                number[digit] = RandomNumber(0,9); //generates all the values. These values are currently being printed for test purposes.
                 digit++;
             }
+            
         }
         //converting the int array into a string array
         //it seems like the easiest way for me to compare them
@@ -68,6 +69,7 @@ public class Game
         while (bulls < numberSize){
            String guess = input.nextLine();
            gDigit = 0;
+           
            //converter that takes the guessed string, then converts it into characters,
            //then converts those characters back into strings to place into a string array
            String guessStr[] = new String[guess.length()];
@@ -76,18 +78,29 @@ public class Game
                guessStr[i] = Character.toString(charG); //records those characters as strings in an array
             } //also mostly from a tutorial 
             
-           //finding the bulls
+           //finding the bulls and cows
            while(gDigit < guess.length()){
                if (numberStr[gDigit].equals(guessStr[gDigit])){ 
-                   System.out.println("Matched digit" + gDigit);
-                   System.out.println(guess.length());
+                   System.out.println("Matched bull " + gDigit);
+                   guess.length();
                    bulls++;
-                   
-               }
+               } else {
+                   for (int i = 0; i < guess.length(); i++){
+                       if ((numberStr[gDigit].equals(guessStr[gDigit]) == false) && (numberStr[gDigit].equals(guessStr[i]))) {
+                           System.out.println("Matched cow " + i);
+                           cows++;
+                        }
+                    }
+                }
                gDigit++;
            }
-           System.out.println("there are " + bulls + " bulls");
+            System.out.println("there are " + bulls + " bulls\nand " + cows + " cows");
+           if (bulls < numberSize) {
+               bulls = 0;
+               cows = 0;
+            }
         }
+        
         if (bulls == numberSize){
             System.out.println("Congratulations! You guessed the number!");
         }
