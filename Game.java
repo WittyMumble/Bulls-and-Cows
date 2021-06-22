@@ -16,13 +16,13 @@ public class Game
     int cows;
     double min;
     double max;
-    final int MAXDIGITS = 5; //the largest possible number of digits you could have
+    final int MAXDIGITS = 10; //the largest possible number of digits you could have
     int number[] = new int[MAXDIGITS];
     int matched[] = new int[MAXDIGITS];
     String gNumber[] = new String[MAXDIGITS];
     int digit = 0; //keeps track of place in array for the initial generation
     int gDigit; //keeps track of guessed digits in the array
-    //keeps track of the number of digits of the number being guesses
+    int guesses = 0; //counts the number of guesses
     
     //initializing the number generator
     int RandomNumber(int min,int max){
@@ -86,7 +86,7 @@ public class Game
             
            //finding the bulls and cows
            while(gDigit < guess.length()){
-               if (numberStr[gDigit].equals(guessStr[gDigit])){ 
+               if (numberStr[gDigit].equals(guessStr[gDigit])){ //bulls
                    //System.out.println("Matched bull " + gDigit);
                    guess.length();
                    bulls++;
@@ -95,8 +95,8 @@ public class Game
                    for (int i = 0; i < guess.length(); i++){
                        if ((numberStr[gDigit].equals(guessStr[gDigit]) == false) && (numberStr[gDigit].equals(guessStr[i]))) {
                             if (matched[gDigit] == 0) {
-                               cows++;
                                matched[gDigit] = 1;
+                               cows++;
                                //System.out.println("Matched cow " + i);
                             }
                         }
@@ -114,10 +114,12 @@ public class Game
                    matched[i] = 0; 
                 }
             }
+            guesses++;
         } //end of guessing while
         
         if (bulls == numberSize){
             System.out.println("Congratulations! You guessed the number!");
+            System.out.println("it took you " + (guesses - 1) + " guesses"); //it counts selecting the digits as a guess and I don't want to deal with that rn
         }
     }
 }
