@@ -104,8 +104,13 @@ public class Game
                 }
                gDigit++;
            } //end of bulls and cows while
-            System.out.println("there are " + bulls + " bulls\nand " + cows + " cows");
            
+           //Grammar
+           if(bulls == 1)System.out.println ("there is 1 bull");
+           else System.out.println ("there are " + bulls + " bulls");
+           if(cows == 1)System.out.println ("and 1 cow");
+           else System.out.println ("and " + cows + " cows");
+                      
             //Resets everything for the next round
            if (bulls < numberSize) {
                bulls = 0;
