@@ -113,7 +113,7 @@ public class Game
                     } else {
                         for (int i = 0; i < guess.length(); i++){
                             if ((numberStr[gDigit].equals(guessStr[gDigit]) == false) && (numberStr[gDigit].equals(guessStr[i]))) {
-                                if (matched[gDigit] == 0) {
+                                if ((matched[gDigit]==0) && (matched[i] == 0)) {
                                     matched[gDigit] = 1;
                                     cows++;
                                     //System.out.println("Matched cow " + i);
