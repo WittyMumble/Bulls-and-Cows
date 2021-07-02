@@ -1,0 +1,6 @@
+Welcome to Bulls and Cows!
+This is a classic code-breaker game,
+where you play against the computer to guess the correct number
+
+Type 'play' to begin playing
+Type 'help' for more information
