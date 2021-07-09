@@ -2,7 +2,7 @@
  * A simple game of Bulls and Cows
  *
  * @author Feb Beliaev(a)
- * @version Jul-8-2021
+ * @version Jul-9-2021
  */
 
 import java.util.Scanner; //Scans for user input
