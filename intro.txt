@@ -1,8 +1,9 @@
 Welcome to Bulls and Cows! 
-Your goal is to either guess a number, or help the computer guess yours.
-you will be prompted to pick a game mode: Guess or Host.
+Your goal is to guess a number:
+The computer knows it,
+But YOU don't....
 
-In Guess mode, the computer provides you with clues, and you guess.
+The computer provides you with clues that should lead you to finding the number.
 Select the number of digits, and the computer will generate a number with that many digits.
 Begin playing by guessing a number with that many digits, 
 and the computer will help you from there.
