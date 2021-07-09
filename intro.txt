@@ -1,6 +1,10 @@
-Welcome to Bulls and Cows!
-This is a classic code-breaker game,
-where you play against the computer to guess the correct number
+Welcome to Bulls and Cows! 
+Your goal is to either guess a number, or help the computer guess yours.
+you will be prompted to pick a game mode: Guess or Host.
 
-Type 'play' to begin playing
-Type 'help' for more information
+In Guess mode, the computer provides you with clues, and you guess.
+Select the number of digits, and the computer will generate a number with that many digits.
+Begin playing by guessing a number with that many digits, 
+and the computer will help you from there.
+Any correct number present in your guess, but not in the right spot in the sequence is a COW.
+If it is in the right spot, it is a BULL.
