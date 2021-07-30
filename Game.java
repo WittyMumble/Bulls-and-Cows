@@ -1,8 +1,9 @@
+
 /**
  * A simple game of Bulls and Cows
  *
  * @author Feb Beliaev(a)
- * @version Jul-9-2021
+ * @version Jul-30-2021
  */
 
 import java.util.Scanner; //Scans for user input
@@ -28,12 +29,18 @@ public class Game
     boolean modeGuess = false;
     //boolean modeHost = false;
     boolean numberPicked = false;
+    boolean sizePicked = false;
 
     //initializing the number generator
     int RandomNumber(int min,int max){
         int x = (int)Math.floor((Math.random()*((max-min)+1))+min); 
         return x;
     }//I got this from a java tutorial online
+
+    String check;
+    boolean isNumeric; 
+    //checks if a string is numeric. Found this on Stack Overflow
+
     //main block
     public Game()
     {
@@ -45,7 +52,7 @@ public class Game
 
         Scanner input = new Scanner (System.in);
         String commands = input.nextLine();
-        switch (commands){
+        switch (commands.toLowerCase()){
             case "help" :  
             try {
                 Scanner fileRead = new Scanner (theFile);
@@ -63,7 +70,7 @@ public class Game
             break;
             case "quit" : end = true;
             break;
-            default : System.out.println("Command not understood");
+            default : System.out.println("Invalid command");
             break;
         }
 
@@ -72,39 +79,38 @@ public class Game
             /*System.out.println("Which Game Mode would you like to play: Guess or Host?");
             String mode = input.nextLine();
             switch (mode){
-                case "guess" : modeGuess = true;
-                break;
-                case "host" : modeHost = true;
-                break;
-                default: System.out.println("You didn't select a mode...");
-                break;
+            case "guess" : modeGuess = true;
+            break;
+            case "host" : modeHost = true;
+            break;
+            default: System.out.println("You didn't select a mode...");
+            break;
             }*/
 
             //GUESS MODE
             //if (modeGuess == true){
-                //Generating the Number
-                System.out.println("How many digits do you want the number to have?");
-                int numberSize = input.nextInt(); //makes the scanner track for number size
-                while (numberPicked == false){
-                    if(numberSize > MAXDIGITS) {System.out.println("For the sake of your own sanity, please don't pick such a large number \n(Pick something lower)"); numberSize = input.nextInt();}
-                    else if(numberSize <= 0) System.out.println("Please pick a number above 0");
-                    else numberPicked = true;
-                }
-                if (numberPicked == true){
-                    while (digit < numberSize) {
-                        number[digit] = RandomNumber(0,9); //generates all the values. These values are currently being printed for test purposes.
-                        matched [digit] = 0;
-                        digit++;
-                    }
+            //Generating the Number
+            System.out.println("How many digits do you want the number to have?");
+            int numberSize = input.nextInt(); //makes the scanner track for number size
+            while (numberPicked == false){
+                if(numberSize > MAXDIGITS) {System.out.println("For the sake of your own sanity, please don't pick such a large number \n(Pick something lower)"); numberSize = input.nextInt();}
+                else numberPicked = true; 
+            }
+            if (numberPicked == true){
+                while (digit < numberSize) {
+                    number[digit] = RandomNumber(0,9); //generates all the values. These values are currently being printed for test purposes.
+                    matched [digit] = 0;
+                    digit++;
                 }
 
+            
                 //converting the int array into a string array
                 //it seems like the easiest way for me to compare them
                 String numberStr[] = new String[number.length];
                 for (int i = 0; i < number.length; i++) {
                     numberStr[i] = String.valueOf(number[i]);
                 } // i found a tutorial for this one too
-
+                System.out.println("Now write a " + numberSize + "-digit number!");
                 //GUESSING
                 while (bulls < numberSize){
                     String guess = input.nextLine(); //from this point onwards, any inputs are treated as guesses
@@ -112,38 +118,47 @@ public class Game
 
                     //converter that takes the guessed string, then converts it into characters,
                     //then converts those characters back into strings to place into a string array
-                    String guessStr[] = new String[guess.length()];
-                    for (int i =0; i < guess.length(); i++) {
-                        char charG = guess.charAt(i); //converts each character in a string to its own character
-                        guessStr[i] = Character.toString(charG); //records those characters as strings in an array
-                    } //also mostly from a tutorial 
-
-                    //finding the bulls and cows
-                    while(gDigit < guess.length()){
-                        if (numberStr[gDigit].equals(guessStr[gDigit])){ //bulls
-                            //System.out.println("Matched bull " + gDigit);
-                            guess.length();
-                            bulls++;
-                            matched[gDigit] = 1; //marks bull
+                    String check = guess;
+                    isNumeric = check.chars().allMatch(Character::isDigit);
+                    if(isNumeric){
+                        String guessStr[] = new String[guess.length()];
+                        if (guess.length() != numberSize && guesses != 0) {
+                            System.out.println("your guess isn't the same length as the number. your guess should be " + numberSize +" digits long");
                         } else {
-                            for (int i = 0; i < guess.length(); i++){
-                                if ((numberStr[gDigit].equals(guessStr[gDigit]) == false) && (numberStr[gDigit].equals(guessStr[i]))) {
-                                    if ((matched[gDigit] == 0) && (matched[i] == 0)) { //makes sure number isn't already matched with something
-                                        matched[gDigit] = 1;
-                                        cows++;
-                                        //System.out.println("Matched cow " + i);
+                            
+                            for (int i =0; i < guess.length(); i++) {
+                                char charG = guess.charAt(i); //converts each character in a string to its own character
+                                guessStr[i] = Character.toString(charG); //records those characters as strings in an array
+                            } //also mostly from a tutorial 
+
+                            //finding the bulls and cows
+                            while(gDigit < guess.length()){
+                                if (numberStr[gDigit].equals(guessStr[gDigit])){ //bulls
+                                    //System.out.println("Matched bull " + gDigit);
+                                    guess.length();
+                                    bulls++;
+                                    matched[gDigit] = 1; //marks bull
+                                } else {
+                                    for (int i = 0; i < guess.length(); i++){
+                                        if ((numberStr[gDigit].equals(guessStr[gDigit]) == false) && (numberStr[gDigit].equals(guessStr[i]))) {
+                                            if ((matched[gDigit] == 0) && (matched[i] == 0)) { //makes sure number isn't already matched with something
+                                                matched[gDigit] = 1;
+                                                cows++;
+                                                //System.out.println("Matched cow " + i);
+                                            }
+                                        }
                                     }
                                 }
-                            }
+                                gDigit++;
+                            } //end of bulls and cows while
+                            //Grammar
+                            if(bulls == 1)System.out.println ("there is 1 bull");
+                            else System.out.println ("there are " + bulls + " bulls");
+                            if(cows == 1)System.out.println ("and 1 cow");
+                            else System.out.println ("and " + cows + " cows");
                         }
-                        gDigit++;
-                    } //end of bulls and cows while
-
-                    //Grammar
-                    if(bulls == 1)System.out.println ("there is 1 bull");
-                    else System.out.println ("there are " + bulls + " bulls");
-                    if(cows == 1)System.out.println ("and 1 cow");
-                    else System.out.println ("and " + cows + " cows");
+                    } else
+                    { System.out.println("please input a NUMBER");}
 
                     //Resets everything for the next round
                     if (bulls < numberSize) {
@@ -152,8 +167,9 @@ public class Game
                         for (var i = 0; i < numberStr.length; i++){
                             matched[i] = 0; 
                         }
+                        guesses++;
                     }
-                    guesses++;
+
                 } //end of guessing while
 
                 if (bulls == numberSize){
@@ -162,18 +178,20 @@ public class Game
 
                     start = false;
                 }
-            //} //END OF GUESS MODE. THIS IS GETTING UNCOMFORTABLY BIG.
-
+                //} //END OF GUESS MODE. THIS IS GETTING UNCOMFORTABLY BIG.
+            }
             //HOSTING MODE 
-            //Update: too complicated. basically writing a whole AI here and i don't have time for that
-            /*if (modeHost == true){
-                //NTS: all guess and number arrays applied are switched bc the computer is guessing now
-                //NTS: or just make new ones, dummy
 
-                //creating array for storing guesses
-                System.out.println("How big is your number?");
-                numberSize = input.nextInt();
-                if (numberSize >= MAXDIGITS) System.out.println("your number is too big"); numberSize = input.nextInt();
+            //Update: too complicated. basically writing a whole AI here and i don't have time for that
+
+            /*if (modeHost == true){
+            //NTS: all guess and number arrays applied are switched bc the computer is guessing now
+            //NTS: or just make new ones, dummy
+
+            //creating array for storing guesses
+            System.out.println("How big is your number?");
+            numberSize = input.nextInt();
+            if (numberSize >= MAXDIGITS) System.out.println("your number is too big"); numberSize = input.nextInt();
 
             }*/
         }
