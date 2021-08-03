@@ -25,12 +25,12 @@ public class Game
     int gDigit; //keeps track of guessed digits in the array
     int guesses = 0; //counts the number of guesses
     boolean end = false;
-    boolean start = true;
+    boolean start = false;
     boolean modeGuess = false;
     //boolean modeHost = false;
     boolean numberPicked = false;
     boolean sizePicked = false;
-
+    
     //initializing the number generator
     int RandomNumber(int min,int max){
         int x = (int)Math.floor((Math.random()*((max-min)+1))+min); 
@@ -51,27 +51,31 @@ public class Game
         File theFile=new File(filename);
 
         Scanner input = new Scanner (System.in);
-        String commands = input.nextLine();
-        switch (commands.toLowerCase()){
-            case "help" :  
-            try {
-                Scanner fileRead = new Scanner (theFile);
-                while (fileRead.hasNextLine()){
-                    System.out.println(fileRead.nextLine());
+        
+        while (start == false){
+            String commands = input.nextLine();
+            switch (commands.toLowerCase()){
+                case "help" :  
+                try {
+                    Scanner fileRead = new Scanner (theFile);
+                    while (fileRead.hasNextLine()){
+                        System.out.println(fileRead.nextLine());
+                    }
                 }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("Something is wrong with a file needed for this program");
+                }
+                commands = input.nextLine();
+                break;
+                case "play" : 
+                start = true; 
+                break;
+                case "quit" : end = true;
+                break;
+                default : System.out.println("Invalid command");
+                break;
             }
-            catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Something is wrong with a file needed for this program");
-            }
-            commands = input.nextLine();
-            break;
-            case "play" : start = true;
-            break;
-            case "quit" : end = true;
-            break;
-            default : System.out.println("Invalid command");
-            break;
         }
 
         while (start == true) {
